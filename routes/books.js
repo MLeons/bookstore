@@ -1,10 +1,14 @@
 const express = require('express');
 const router = express.Router();
 
+const passport = require('passport');
+const jwt = require('jsonwebtoken');
+
+
 let Genre = require('../models/genre');
 let Book = require('../models/book');
 
-router.get('/', (req, res) => {
+router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
     Book.getBooks((err, books) => {
         if (err) {
             throw err;

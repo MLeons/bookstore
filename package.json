@@ -19,7 +19,9 @@
     "lodash": "*",
     "bcrypt": "*",
     "validator": "*",
-    "jsonwebtoken": "*"
+    "jsonwebtoken": "*",
+    "passport": "*",
+    "passport-jwt": "*"
   },
   "devDependencies": {
     "babel-core": "*",

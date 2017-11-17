@@ -1,46 +1,23 @@
-var LocalStrategy = require('passport-local').Strategy;
-var User = require('../models/user');
+const JwtStrategy = require('passport-jwt').Strategy;
+const ExtractJwt = require('passport-jwt').ExtractJwt;
+
+const User = require('../models/user');
+const config = require('../config/database');
 
 module.exports = function (passport) {
-
-    passport.serializeUser(function (user, done) {
-        done(null, user.id);
-    });
-
-    passport.deserializeUser(function (id, done) {
-        User.findById(id, function (err, user) {
-            done(err, user);
+    var opts = {};
+    opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+    opts.secretOrKey = config.secret;
+    passport.use(new JwtStrategy(opts, (jwt_payload, done) => {
+        User.getUserById(jwt_payload.user._id, (err, user) => {
+            if (err) {
+                return done(err, false);
+            }
+            if (user) {
+                return done(null, user);
+            } else {
+                return done(null, false);
+            }
         });
-    });
-
-    passport.use('local-signup', new LocalStrategy({
-        usernameField: 'email',
-        passwordField: 'password',
-        passReqToCallback: true
-    },
-        function (req, email, password, done) {
-            process.nextTick(function () {
-                User.findOne({ 'local.username': email }, function (err, user) {
-                    if (err)
-                        return done(err);
-                    if (user) {
-                        return done(null, false, req.flash('signupMessage', 'That email already taken'));
-                    } else {
-                        var newUser = new User();
-                        newUser.local.username = email;
-                        newUser.local.password = password;
-
-                        newUser.save(function (err) {
-                            if (err)
-                                throw err;
-                            return done(null, newUser);
-                        })
-                    }
-                })
-
-            });
-        }));
-
-
-
+    }));
 }

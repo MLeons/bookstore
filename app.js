@@ -5,6 +5,7 @@ const mongoose = require('mongoose');
 const config = require('./config/database');
 var cors = require('cors');
 const fs = require('fs');
+const passport = require('passport');
 
 const app = express();
 const port = 3000;
@@ -30,6 +31,11 @@ db.once('open', () => {
 db.on('error', (err) => {
 	console.log('DB Error: ' + err);
 });
+
+app.use(passport.initialize());
+app.use(passport.session());
+require('./config/passport')(passport);
+
 
 let books = require('./routes/books');
 let genres = require('./routes/genres');
