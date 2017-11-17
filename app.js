@@ -33,17 +33,11 @@ db.on('error', (err) => {
 
 let books = require('./routes/books');
 let genres = require('./routes/genres');
-//let indexRoutes = require('./routes/index');
+let users = require('./routes/users');
 
 app.use('/api/books', books);
 app.use('/api/genres', genres);
-//app.use('/', indexRoutes);
-
-//app.use(express.static(__dirname + '/client'));
-
-// app.use(function (err, req, res, next) {
-// 	res.status(err.status || 500);
-// });
+app.use('/api/users', users);
 
 app.use('/*', function (req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
