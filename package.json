@@ -21,7 +21,8 @@
     "validator": "*",
     "jsonwebtoken": "*",
     "passport": "*",
-    "passport-jwt": "*"
+    "passport-jwt": "*",
+    "passport-google-oauth": "*"
   },
   "devDependencies": {
     "babel-core": "*",

@@ -40,10 +40,13 @@ require('./config/passport')(passport);
 let books = require('./routes/books');
 let genres = require('./routes/genres');
 let users = require('./routes/users');
+let auth = require('./routes/auth');
 
 app.use('/api/books', books);
 app.use('/api/genres', genres);
 app.use('/api/users', users);
+app.use('/api/auth', auth);
+
 
 app.use('/*', function (req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
