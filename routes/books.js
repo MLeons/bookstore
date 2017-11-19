@@ -9,6 +9,7 @@ let Genre = require('../models/genre');
 let Book = require('../models/book');
 
 router.get('/', passport.authenticate('jwt', { session: false }), (req, res) => {
+    //router.get('/', (req, res) => {
     Book.getBooks((err, books) => {
         if (err) {
             throw err;

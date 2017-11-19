@@ -66,4 +66,26 @@ router.post('/authenticate', (req, res, next) => {
     });
 });
 
+router.post('/authgoogle', (req, res, next) => {
+    const user_id = req.body._id;
+    User.getUserById(user_id, (err, user) => {
+        if (err) throw err;
+        if (!user) {
+            return res.json({ success: false, msg: 'User not found' });
+        }
+        const token = jwt.sign({ user }, config.secret, { expiresIn: 604800 });
+        //console.log('we here with ' + token);
+        res.json({
+            success: true,
+            token: 'Bearer ' + token,
+            user: {
+                id: user._id,
+                username: user.google.id,
+                email: user.google.email
+            }
+        });
+    })
+});
+
+
 module.exports = router;
